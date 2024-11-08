@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+# Batocera service file for RemotePi power button events
+# and graceful shutdown.
+#
+case "$1" in
+    start)
+        echo "Starting the RemotePi IR/power button observer."
+        /userdata/system/remotepi/irswitch.py &
+        if [ $? -eq 0 ]; then
+            logger -t remotepi "IR/power button observer started."
+        fi
+        ;;
+    stop)
+        echo "Stopping the RemotePi IR/power button observer."
+        ps -ef | grep 'irswitch\.' | grep -v grep | awk '{print $2}' | xargs -r kill -15
+        shutdown_check=$(grep "init: Switching to runlevel: 0" /var/log/messages)
+        if [ $? -eq 0 ]; then
+            # Code in here will only be executed on shutdown.
+            echo "Signalling the shutdown to RemotePi."
+            /userdata/system/remotepi/shutdown.py
+            logger -t remotepi "Shutdown initiated"
+        fi
+        logger -t remotepi "IR/power button observer stopped."
+        ;;
+    status)
+        # Code in here will executed on status request.
+        irswitch_check=$(ps -ef | grep 'irswitch\.' | grep -v grep)
+        if [ $? -eq 0 ]; then
+            echo "RemotePi IR/power button observer is running."
+        else
+            echo "RemotePi IR/power button observer is stopped."
+        fi
+        ;;
+    *)
+        # Code in here will be executed in all other conditions.
+        echo "Usage: $0 {start|stop|status}"
+        ;;
+esac
+ 
+exit $?
