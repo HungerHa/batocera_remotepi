@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 # Created on: 2024-11-03 13:56
-# Changed on: 2024-11-04 19:52
+# Changed on: 2024-11-05 18:22
 # Author: HarryH
-# Version: 1.0.1
+# Version: 1.0.2
 #
 # Changelog:
+# 1.0.2 2024-11-05
+# - suppress RPi.GPIO warnings
 # 1.0.1 2024-11-04
 # - added RPi.GPIO support
 # 1.0.0 2024-11-03
@@ -42,6 +44,7 @@ def shutdown():
 
 if rpigpio_spec is not None:
     # set GPIO14 to input
+    GPIO.setwarnings(False)
     GPIO.setup(SHUTDOWN_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     # check if GPIO14 is going to high
     while GPIO.input(SHUTDOWN_PIN) == GPIO.LOW:
