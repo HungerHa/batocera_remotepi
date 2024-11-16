@@ -13,7 +13,7 @@ Connect via SSH/PuTTY to Batocera. You are already in the correct path ***/userd
 * Download the tar archive directly from the releases at GitHub.
 
     ```bash
-    wget https://github.com/HungerHa/batocera_remotepi/releases/latest/remotepi.tgz
+    wget https://github.com/HungerHa/batocera_remotepi/releases/latest/download/remotepi.tgz
     ```
 
     or copy the ***remotepi.tgz*** via SCP (WinSCP, FileZilla ...) to ***/userdata/system*** if you want.
