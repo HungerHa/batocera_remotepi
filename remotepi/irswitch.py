@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # Created on: 2024-11-03 13:56
-# Changed on: 2024-11-10 17:33
+# Changed on: 2024-11-16 19:56
 # Author: HarryH
-# Version: 1.0.4
+# Version: 1.0.5
 #
 # Changelog:
+# 1.0.5 2024-11-16
+# - support for poweroff.please file added
+# - removed some debug outputs
 # 1.0.4 2024-11-10
 # - added gpio 2.2.0 support
 # - fixed gpio 1.5.4 chip initialization
@@ -19,6 +22,7 @@
 
 import importlib.util
 import os
+from pathlib import Path
 from subprocess import check_call
 import time
 os.environ['LG_WD'] = '/tmp'
@@ -50,6 +54,7 @@ def power_btn_pressed(chip=None, gpio=None, level=None, timestamp=None):
 
 
 def shutdown():
+    Path('/tmp/poweroff.please').touch()
     check_call(['poweroff'])
 
 
@@ -118,7 +123,6 @@ elif rpigpio_spec is not None:
     GPIO.setup(SHUTDOWN_PIN, GPIO.OUT)
     GPIO.output(SHUTDOWN_PIN, True)
     time.sleep(3.0)
-    # print('shutdown initiated')
     shutdown()
     GPIO.cleanup()
 else:
@@ -135,6 +139,5 @@ else:
             led = LED(SHUTDOWN_PIN)
             led.on
             time.sleep(3.0)
-            # print('shutdown initiated')
             shutdown()
             break
