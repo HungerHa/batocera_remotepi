@@ -1,8 +1,22 @@
 #!/bin/bash
 #
-# Batocera service file for RemotePi power button events
+# Batocera service/custom.sh file for RemotePi power button events
 # and graceful shutdown.
 #
+# Created on: 2024-11-03 16:30
+# Changed on: 2024-11-14 18:11
+# Author: HarryH
+# Version: 1.0.2
+#
+# Changelog:
+# 1.0.2 2024-11-14
+# - workaround: renamed back to custom.sh to work reliable on shutdown (not unexpectedly killed)
+# - switched to the official method for detecting shutdown in Batocera
+# 1.0.1 2024-11-05
+# - refactored to work as a batocera-service
+# 1.0.0 2024-11-03
+# - initial version
+
 case "$1" in
     start)
         echo "Starting the RemotePi IR/power button observer."
@@ -14,8 +28,7 @@ case "$1" in
     stop)
         echo "Stopping the RemotePi IR/power button observer."
         ps -ef | grep 'irswitch\.' | grep -v grep | awk '{print $2}' | xargs -r kill -15
-        shutdown_check=$(grep "init: Switching to runlevel: 0" /var/log/messages)
-        if [ $? -eq 0 ]; then
+        if [ -f "/tmp/shutdown.please" ]; then
             # Code in here will only be executed on shutdown.
             echo "Signalling the shutdown to RemotePi."
             /userdata/system/remotepi/shutdown.py

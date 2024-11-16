@@ -1,2 +1,2 @@
 #!/bin/bash
-tar --owner=root --group=root -cvzf remotepi.tgz remotepi/irswitch.py remotepi/shutdown.py services/remotepi
+tar --owner=root --group=root -cvzf remotepi.tgz remotepi/irswitch.py remotepi/shutdown.py custom.sh
