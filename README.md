@@ -44,11 +44,16 @@ Connect via SSH/PuTTY to Batocera. You are already in the correct path ***/userd
 
 ## Uninstallation
 
-Connect via SSH/PuTTY to Batocera.
+Connect via SSH/PuTTY to Batocera. Then stop the running process and delete the scripts including the directory that contains them.
 
 ```bash
 bash /userdata/system/custom.sh stop
 rm -rf /userdata/system/remotepi
+```
+
+**ATTENTION**: As mentioned during the installation, the ***custom.sh*** can be a shared file. If you have made additional changes, you may want to make a backup or keep the file. In all other cases, delete this file as well.
+
+```bash
 rm custom.sh
 ```
 
