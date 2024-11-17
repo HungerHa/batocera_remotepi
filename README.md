@@ -1,10 +1,14 @@
 # Batocera RemotePi support
 
- I was asked by RobertMV if I can support to get the already working scripts for LibreELEC to work with Batocera too. The following scripts are the result and tested on real RemotePi hardware with RPi4 and Batocera v40/v41. Many thanks to Robert for testing on real hardware during different troubleshooting sessions. I doesn't own a RemotePi by myself, so my chance to troubleshoot without help of an owner of this kind of hardware is very limited. Also I assume, that in one of the next releases of Batocera the integrated support for MSL Digital Solutions RemotePi will be fixed.
+ Because after some Linux kernel changes the integrated support for the RemotePi hardware is currently not working properly, I was asked by RobertMV if I can help to make the already working scripts for LibreELEC work with Batocera as well. The following scripts are the result and tested on real RemotePi hardware with RPi4 and Batocera v40/v41. Many thanks to Robert for testing on real hardware during different troubleshooting sessions. Since I don't own a RemotePi myself, my troubleshooting options are very limited without the help of an owner of this type of hardware. I also assume that the integrated support for the MSL Digital Solutions RemotePi will be corrected in one of the next versions of Batocera.
 
-* irswitch.py
-* shutdown.py
-* custom.sh
+* /userdata/system/remotepi/irswitch.py
+* /userdata/system/remotepi/shutdown.py
+* /userdata/system/custom.sh
+
+## Precaution
+
+The integrated support for MSL Digital Solutions RemotePi: "Any remote control as pswitch v2013" or "Any remote control as pswitch v2015" must not be enabled to not conflict with this solution.
 
 ## Installation
 
@@ -20,8 +24,16 @@ Connect via SSH/PuTTY to Batocera. You are already in the correct path ***/userd
 
 * Unarchive the scripts. This ensures that the required directories are created and the file permissions are set correctly.
 
+    **ATTENTION**: If a ***custom.sh*** already exists with other customizations, you should first create a backup of this file and adjust the changes again after the installation. The ***custom.sh*** will be replaced by the following process !
+
     ```bash
     tar -xvzf remotepi.tgz && rm remotepi.tgz
+    ```
+
+    Optional: Wget automatically creates a hidden HSTS file (HTTP Strict Transport Security) as a Known Hosts database during the download process. If someone does not like this or is bothered by it, the file can also be removed.
+
+    ```bash
+    rm .wget-hsts
     ```
 
 * Activate the background service to observe power button events. Alternatively you can do a **reboot**.
@@ -46,7 +58,7 @@ The content of **custom.sh** was originally intended to work as a Batocera servi
 
 ## Usage as a service
 
-If you are brave and wan't to ignore the known issues part, you can convert the **custom.sh** to **remotepi** service:
+If you are brave and want to ignore the part with the known problems, you can convert the **custom.sh** into **remotepi** service:
 
 ```bash
 bash /userdata/system/custom.sh stop
